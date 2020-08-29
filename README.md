@@ -26,3 +26,7 @@ https://opendata.cwb.gov.tw/dist/opendata-swagger.html#/
 
 中央氣象局氣象資料開放平臺 – 資料擷取使用說明
 https://opendata.cwb.gov.tw/opendatadoc/CWB_Opendata_API_V1.2.pdf
+
+預報XML產品預報因子欄位中文說明表
+https://opendata.cwb.gov.tw/opendatadoc/MFC/D0047.pdf
+
