@@ -9,7 +9,6 @@ if (isset($_POST["btnOK"])) {
 
     $locationName = $_POST["locationName"];
 
-    echo $locationName . "天氣概況" . "<br>";
     $urllocationName =  urlencode($locationName);
     $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
 
@@ -43,9 +42,7 @@ if (isset($_POST["btnOK"])) {
                 case "MinT":
                     $MinT = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
                     break;
-                    // case "UVI":
-                    //     $UVI = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
-                    //     break;
+
                 case "RH":
                     $RH = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
                     break;
@@ -61,7 +58,6 @@ if (isset($_POST["btnOK"])) {
         $WeatherDescription = explode("。", $weatherElement[10]['time'][$i]['elementValue'][0]["value"]);
 
         if (count($WeatherDescription) >= 7) {
-            echo count($WeatherDescription);
             $PoP = $WeatherDescription[1];
             $Description = $WeatherDescription[3];
         } else
@@ -74,21 +70,6 @@ if (isset($_POST["btnOK"])) {
     multi;
 
         mysqli_query($link, $sql);
-
-        // echo "天氣現象:" . $Wx . "<br>";
-        // echo "最高體感溫度 攝氏" . $MaxAT . "度<br>";
-        // echo "最低體感溫度 攝氏" . $MinAT . "度<br>";
-        // echo "平均溫度 攝氏" . $T . "度<br>";
-        // echo "最高溫度 攝氏" . $MaxT . "度<br>";
-        // echo "最低溫度 攝氏" . $MinT . "度<br>";
-        // echo "紫外線指數 " . $UVI . "<br>";
-        // echo "平均相對濕度 " . $RH . "%<br>";
-        // echo "最大風速 " . $WS . "公尺/秒<br>";
-        // echo "風向 " . $WD . "<br>";
-
-
-
-
         $i++;
     }
 }
@@ -104,13 +85,28 @@ if (isset($_POST["btnOK"])) {
     <title>Document</title>
 </head>
 
+<style>
+
+#seven{
+    grid-template: 7,1fr;
+
+}
+
+
+
+</style>
+
+
 <body>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <form id="form1" name="form1" method="post">
         <div class="form-group row">
-            <label for="locationName" class="col-4 col-form-label">縣市</label>
+
             <div class="col-8">
                 <select id="locationName" name="locationName" class="custom-select col-4 " required="required">
                     <option value="基隆市">基隆市</option>
@@ -136,10 +132,6 @@ if (isset($_POST["btnOK"])) {
                     <option value="金門縣">金門縣</option>
                     <option value="連江縣">連江縣</option>
                 </select>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="offset-4 col-8">
                 <button name="btnOK" type="btnOK" class="btn btn-primary">Submit</button>
             </div>
         </div>
@@ -147,17 +139,83 @@ if (isset($_POST["btnOK"])) {
         $sql = <<<multi
         select * from sevenDay 
     multi;
-
-    $result = mysqli_query($link, $sql);
+        echo $locationName . "天氣概況" . "<br>";
+        $result = mysqli_query($link, $sql);
 
         ?>
-         <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-        <td><?= $row["startTime"] ."<br>"?> </td>
+             <table>一週天氣預報</table>
+        <table>
+
+
+        
+            
+        <tbody>
+        <tr class="day">
+          <th id="C10017" headers="County" rowspan="2">
+            <a href="/V8/C/W/County/County.html?CID=10017" title="顯示基隆市預報頁面"><span class="heading_3">基隆市<i class="fa fa-plus-square" aria-hidden="true"></i></span></a>
+          </th>
+          <td headers="C10017 day1">
+            <span class="signal">
+              <img src="/V8/assets/img/weather_icons/weathers/svg_icon/day/10.svg" alt="陰時多雲短暫陣雨" title="陰時多雲短暫陣雨">
+            </span>
+            <p>
+              <span class="tem-C is-active">27 - 34</span>
+              <span class="tem-F is-hidden">81 - 93</span>
+            </p>
+          </td>         
+        </tr>
+        <tr class="night">
+          <td headers="C10017 day1">
+            <span class="signal">
+              <img src="/V8/assets/img/weather_icons/weathers/svg_icon/night/03.svg" alt="多雲時晴" title="多雲時晴">
+            </span>
+            <p>
+              <span class="tem-C is-active">28 - 31</span>
+              <span class="tem-F is-hidden">82 - 88</span>
+            </p>
+          </td>
+         
+        </tr>
+      </tbody>
+</table>
+
+        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+
+
        
+            <table class="seven">
 
-        <td><?= $row["MaxAT"] ."<br>"?></td>
+            
 
-         <?php }?>
+            <tr ><?= substr($row["startTime"], 5, 5) . "<br>" ?></tr>
+                    <tr>    <?= "天氣現象:" . $row["Wx"] . "<br>" ?></tr>
+                    <tr><?= "最高溫度" . $row["MaxT"] . "<br>" ?></tr>
+                    <tr><?= "最低溫度" . $row["MinT"] . "<br>" ?></tr>
+
+                    <!-- <td><?= "最高體感溫度 攝氏" . $row["MaxAT"] . "<br>" ?></td>
+                    <td><?= "最低體感溫度 攝氏" . $row["MinAT"] . "<br>" ?></td>
+                    <td><?= "平均溫度 攝氏" . $row["T"] . "<br>" ?></td>
+               
+                    <td><?= "平均相對濕度 " . "<br>" ?></td>
+                    <td><?= "最大風速 " . $row["WS"] . "<br>" ?></td>
+                    <td><?= "風向 " . $row["WD"] . "<br>" ?></td> -->
+              
+
+
+
+
+
+            </table>
+            <table></table>
+
+
+
+
+
+
+
+
+        <?php } ?>
 
     </form>
 </body>
