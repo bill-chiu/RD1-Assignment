@@ -1,50 +1,65 @@
 <?php
 
-
 $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
-
-
+require("connDB.php");
 if (isset($_POST["btnOK"])) {
 
     $locationName = $_POST["locationName"];
 
-    // $locationName = "宜蘭縣";
-
+    echo $locationName . "天氣概況" . "<br>";
     $urllocationName =  urlencode($locationName);
     $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
-    // $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=".$Authorization."&limit=1&locationName=".$locationName);
 
     $json = file_get_contents($url);
     $data = json_decode($json, true);
-    // echo $json;
-    // var_dump($json);
-    // $data2 = $data['records']['locations'][0]['location'][0]['weatherElement'][0];
+    $i = 0;
+    $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElement'];
+    while ($i < count($weatherElement[3]['time'])) {
 
-    // var_dump($data);
-    // unset($json,$data2);
+        echo $i . "<br>";
+        $startTime = $weatherElement[1]['time'][$i]['startTime'];
+        $endTime = $weatherElement[1]['time'][$i]['endTime'];
+        echo ($startTime) . "<br>";
+        echo $endTime . "<br>";
+        for ($j = 0; $j < count($weatherElement); $j++) {
+            switch ($weatherElement[$j]['elementName']) {
 
-    // $startTime=$data2['startTime'];['parameterName']
-    $PoP12h = $data['records']['locations'][0]['location'][0]['weatherElement'][0]['time'][0]['elementValue'][0]["value"];
-    $startTime = $data['records']['locations'][0]['location'][0]['weatherElement'][0]['time'][0]['startTime'];
-    $endTime = $data['records']['locations'][0]['location'][0]['weatherElement'][0]['time'][0]['endTime'];
-    $AT = $data['records']['locations'][0]['location'][0]['weatherElement'][1]['time'][0]['elementValue'][0]["value"];
-    $Wx = $data['records']['locations'][0]['location'][0]['weatherElement'][2]['time'][0]['elementValue'][0]["value"];
-    $T = $data['records']['locations'][0]['location'][0]['weatherElement'][3]['time'][0]['elementValue'][0]["value"];
-    $RH = $data['records']['locations'][0]['location'][0]['weatherElement'][4]['time'][0]['elementValue'][0]["value"];
-    $CI=$data['records']['locations'][0]['location'][0]['weatherElement'][5]['time'][0]['elementValue'][1]["value"];
-    $WeatherDescription=$data['records']['locations'][0]['location'][0]['weatherElement'][6]['time'][0]['elementValue'][0]["value"];
-
-    // echo $locationName."天氣概況"."<br>";
-    echo "開始時間:" . $startTime . "%" . "<br>";
-    echo "結束時間:" . $endTime . "<br>";
-    echo "12小時降雨機率:" . $PoP12h . "%<br>";
-    echo "天氣現象:" . $AT . "<br>";
-    echo "體感溫度:攝氏" . $Wx . "度<br>";
-    echo "溫度:攝氏" . $T . "度<br>";
-    echo "溫度:相對濕度" . $RH . "<br>";
-    echo "舒適度:" . $CI . "<br>";
-    echo "天氣預報綜合描述:" . $WeatherDescription . "<br>";
+                case "Wx":
+                    $Wx = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                    break;
+                case "AT":
+                    $AT = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                    break;
+                case "T":
+                    $T = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                    break;
+                case "RH":
+                    $RH = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                    break;
+                case "WS":
+                    $WS = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                    break;
+                case "WD":
+                    $WD = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                    break;
+                default:
+            }
+        }
+        echo "天氣現象:" . $Wx . "<br>";
+        echo "體感溫度 攝氏" . $AT . "度<br>";
+        echo "溫度 攝氏" . $T . "度<br>";
+        echo "相對濕度 " . $RH . "%<br>";
+        $WeatherDescription = explode("。", $weatherElement[6]['time'][$i]['elementValue'][0]["value"]);
+        if (count($WeatherDescription) >= 7) {
+            echo $WeatherDescription[1] . "<br>";
+            echo "天氣描述 " . $WeatherDescription[3] . "<br>";
+        }
+        echo "風速 " . $WS . "公尺/秒<br>";
+        echo "風向 " . $WD . "<br>";
+        $i++;
+    }
 }
+
 ?>
 
 <!DOCTYPE html>

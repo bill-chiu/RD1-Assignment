@@ -1,0 +1,25 @@
+create database myweather;
+use myweather;
+
+
+CREATE TABLE sevenDay (
+    sevenDayId int AUTO_INCREMENT not null primary key,
+    startTime varchar(25) NOT NULL DEFAULT '',
+    endTime varchar(25) NOT NULL DEFAULT '',
+    Wx varchar(12) NOT NULL DEFAULT '',
+    MaxAT varchar(12) NOT NULL DEFAULT '',
+    MinAT varchar(12) NOT NULL DEFAULT '',
+    T varchar(12) NOT NULL DEFAULT '',
+    MaxT varchar(12) NOT NULL DEFAULT '',
+    MinT varchar(12) NOT NULL DEFAULT '',
+    RH varchar(12) NOT NULL DEFAULT '',
+    PoP varchar(12) NOT NULL DEFAULT '',
+    Description varchar(12) NOT NULL DEFAULT '',
+    WS varchar(12) NOT NULL DEFAULT '',
+    WD varchar(12) NOT NULL DEFAULT ''
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ INSERT INTO sevenDay (startTime,endTime,Wx,MaxAT,MinAT,T,MaxT,MinT,RH,PoP,Description,WS,WD) VALUES
+    ('10:20', '10:30','爽', '87', '13','50','87','13','87%','87%','哭','7','東北')
+
