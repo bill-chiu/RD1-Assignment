@@ -83,26 +83,26 @@ if (isset($_POST["btnOK"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="grid.css">
 </head>
 
-<style>
-
-#seven{
-    grid-template: 7,1fr;
-
-}
-
-
-
-</style>
+<!-- <style>
+    #box {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-gap: 20px;
+        width: 1200px;
+        height: 300px;
+    }
+</style> -->
 
 
 <body>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <form id="form1" name="form1" method="post">
         <div class="form-group row">
@@ -135,88 +135,55 @@ if (isset($_POST["btnOK"])) {
                 <button name="btnOK" type="btnOK" class="btn btn-primary">Submit</button>
             </div>
         </div>
-        <?php
-        $sql = <<<multi
+        <h1> <?php
+                $sql = <<<multi
         select * from sevenDay 
     multi;
-        echo $locationName . "天氣概況" . "<br>";
-        $result = mysqli_query($link, $sql);
+                echo $locationName . "<br>";
+                $result = mysqli_query($link, $sql);
 
-        ?>
-             <table>一週天氣預報</table>
-        <table>
+                ?></h1>
+        <h1>一週天氣預報</h1>
 
+        <div id="box" align="center">
 
-        
-            
-        <tbody>
-        <tr class="day">
-          <th id="C10017" headers="County" rowspan="2">
-            <a href="/V8/C/W/County/County.html?CID=10017" title="顯示基隆市預報頁面"><span class="heading_3">基隆市<i class="fa fa-plus-square" aria-hidden="true"></i></span></a>
-          </th>
-          <td headers="C10017 day1">
-            <span class="signal">
-              <img src="/V8/assets/img/weather_icons/weathers/svg_icon/day/10.svg" alt="陰時多雲短暫陣雨" title="陰時多雲短暫陣雨">
-            </span>
-            <p>
-              <span class="tem-C is-active">27 - 34</span>
-              <span class="tem-F is-hidden">81 - 93</span>
-            </p>
-          </td>         
-        </tr>
-        <tr class="night">
-          <td headers="C10017 day1">
-            <span class="signal">
-              <img src="/V8/assets/img/weather_icons/weathers/svg_icon/night/03.svg" alt="多雲時晴" title="多雲時晴">
-            </span>
-            <p>
-              <span class="tem-C is-active">28 - 31</span>
-              <span class="tem-F is-hidden">82 - 88</span>
-            </p>
-          </td>
-         
-        </tr>
-      </tbody>
-</table>
-
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+            <?php while ($row = mysqli_fetch_assoc($result)) { ?>
 
 
-       
-            <table class="seven">
 
-            
+                <div>
+                    <div style="background-color:#003D79 ">
+                        <font color="white"><?= substr($row["startTime"], 5, 5) . "<br>" ?> </font>
+                    </div>
+                    <div style="background-color:#D2E9FF; "> <?= $row["Wx"] . "<br>" ?>
 
-            <tr ><?= substr($row["startTime"], 5, 5) . "<br>" ?></tr>
-                    <tr>    <?= "天氣現象:" . $row["Wx"] . "<br>" ?></tr>
-                    <tr><?= "最高溫度" . $row["MaxT"] . "<br>" ?></tr>
-                    <tr><?= "最低溫度" . $row["MinT"] . "<br>" ?></tr>
+                        <a><img src="image_mon/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
+                        <?= "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>" ?></div>
 
-                    <!-- <td><?= "最高體感溫度 攝氏" . $row["MaxAT"] . "<br>" ?></td>
+
+
+                    <div style="background-color:#ACD6FF; ">
+                        <?php $row = mysqli_fetch_assoc($result) ?>
+                        <!-- <?= substr($row["startTime"], 5, 5) . "<br>" ?> -->
+                        <!-- <?= $row["startTime"] . "<br>" ?> -->
+                        <?= $row["Wx"] . "<br>" ?>
+                        <a><img src="image_mon/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
+                        <?= "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>" ?>
+                        <div style="background-color:#46A3FF; "> <font color="white">
+                        <td><?= $row["WD"] . "<br>" ?></td>
+                        <td><?= $row["WS"] . "公尺/秒<br>" ?></td> </font> </div>
+                    </div>
+                </div>
+
+                <!-- <td><?= "最高體感溫度 攝氏" . $row["MaxAT"] . "<br>" ?></td>
                     <td><?= "最低體感溫度 攝氏" . $row["MinAT"] . "<br>" ?></td>
                     <td><?= "平均溫度 攝氏" . $row["T"] . "<br>" ?></td>
                
-                    <td><?= "平均相對濕度 " . "<br>" ?></td>
-                    <td><?= "最大風速 " . $row["WS"] . "<br>" ?></td>
-                    <td><?= "風向 " . $row["WD"] . "<br>" ?></td> -->
-              
+                    <td><?= "平均相對濕度 " . "<br>" ?></td> -->
 
 
-
-
-
-            </table>
-            <table></table>
-
-
-
-
-
-
-
-
-        <?php } ?>
-
+            <?php } ?>
+        </div>
     </form>
 </body>
 
