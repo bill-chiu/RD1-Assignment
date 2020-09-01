@@ -1,3 +1,17 @@
+#boxb{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 10px;
+    
+}
+
+
+#boxa{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 10px;
+    
+}
 #box{
     display: grid;
     grid-template-columns: repeat(7,1fr);
