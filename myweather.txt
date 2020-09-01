@@ -2,6 +2,19 @@ create database myweather;
 use myweather;
 
 
+CREATE TABLE rain (
+    city varchar(12) NOT NULL DEFAULT '',
+    town varchar(12) NOT NULL DEFAULT '',
+    attribute varchar(12) NOT NULL DEFAULT '',
+    oneHour varchar(12) NOT NULL DEFAULT '',
+    oneDay varchar(12) NOT NULL DEFAULT ''
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO rain (city,town,attribute,oneHour,oneDay) VALUES
+('臺北市','烏來區','局屬無人測站','10','50')
+
+
 CREATE TABLE today (
 
     Wx varchar(12) NOT NULL DEFAULT '',
@@ -13,13 +26,6 @@ CREATE TABLE today (
 
  INSERT INTO today (Wx,T,MaxT,MinT,PoP) VALUES
     ('爽','50','87','12','87%')
-
-
-echo "現在天氣:".$Wx."<br>";
-echo "現在濕度:".$PoP."%"."<br>";
-echo "最低溫度:".$MinT."<br>";
-echo "最高溫度:".$MaxT."<br>";
-echo "舒適度:".$CI."<br>";
 
 CREATE TABLE twoDay (
     startTime varchar(25) NOT NULL DEFAULT '',

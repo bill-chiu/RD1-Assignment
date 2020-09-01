@@ -1,8 +1,5 @@
 <?php
 
-$Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
-require("connDB.php");
-
 $sql = "DELETE FROM `today`";
 mysqli_query($link, $sql);
 
