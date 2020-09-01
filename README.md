@@ -30,3 +30,8 @@ https://opendata.cwb.gov.tw/opendatadoc/CWB_Opendata_API_V1.2.pdf
 預報XML產品預報因子欄位中文說明表
 https://opendata.cwb.gov.tw/opendatadoc/MFC/D0047.pdf
 
+使用縣市圖片：交通部觀光局
+https://www.taiwan.net.tw/
+
+使用天氣圖像圖片：
+https://www.flaticon.com/packs/weather-112

@@ -142,7 +142,7 @@ if (isset($_POST["btnOK"])) {
                 echo $locationName . "<br>";
                 $result = mysqli_query($link, $sql);
 
-                ?></h1>
+                ?> <div><a><img src="image/country/<?= $locationName ?>.jpg" width="480" height="270"></a></div> </h1>
         <h1>一週天氣預報</h1>
 
         <div id="box" align="center">
@@ -157,7 +157,7 @@ if (isset($_POST["btnOK"])) {
                     </div>
                     <div style="background-color:#D2E9FF; "> <?= $row["Wx"] . "<br>" ?>
 
-                        <a><img src="image_mon/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
+                        <a><img src="image/weather/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
                         <?= "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>" ?></div>
 
 
@@ -167,7 +167,7 @@ if (isset($_POST["btnOK"])) {
                         <!-- <?= substr($row["startTime"], 5, 5) . "<br>" ?> -->
                         <!-- <?= $row["startTime"] . "<br>" ?> -->
                         <?= $row["Wx"] . "<br>" ?>
-                        <a><img src="image_mon/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
+                        <a><img src="image/weather/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
                         <?= "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>" ?>
                         <div style="background-color:#46A3FF; "> <font color="white">
                         <td><?= $row["WD"] . "<br>" ?></td>
