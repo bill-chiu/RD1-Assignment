@@ -126,8 +126,8 @@ while ($i < count($location)) {
 
         <?php
 
-
-        $sql = "select * from rain WHERE city='$locationName'";
+        //查詢所選縣市觀測站 並按照鄉鎮排序
+        $sql = "select * from rain WHERE city='$locationName' ORDER BY `rain`.`town` ASC";
         $rainresult = mysqli_query($link, $sql);
         $i = 0;
         while ($row = mysqli_fetch_assoc($rainresult)) { ?>
