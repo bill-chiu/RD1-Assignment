@@ -2,15 +2,16 @@
 
 $sql = "DELETE FROM `rain`";
 mysqli_query($link, $sql);
+$Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
 
-    $locationName = $_POST["locationName"];
+$locationName = "宜蘭縣";
 
-    $urllocationName =  urlencode($locationName);
-    $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
-    //https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0002-001?Authorization=CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256&elementName=RAIN
-    //https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0002-001?Authorization=CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256&elementName=HOUR_24
-    $json = file_get_contents($url);
-    $data = json_decode($json, true);
+$urllocationName =  urlencode($locationName);
+$url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0002-001?Authorization=$Authorization&elementName=RAIN,HOUR_24");
+
+$json = file_get_contents($url);
+$data = json_decode($json, true);
+
     $i = 0;
     $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElement'];
     while ($i < count($weatherElement[3]['time'])) {

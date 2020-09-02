@@ -22,7 +22,7 @@
 CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256
 
 中央氣象局開放資料平臺之資料擷取API
-https://opendata.cwb.gov.tw/dist/opendata-swagger.html#/
+    https://opendata.cwb.gov.tw/dist/opendata-swagger.html#/
 
 中央氣象局氣象資料開放平臺 – 資料擷取使用說明
 https://opendata.cwb.gov.tw/opendatadoc/CWB_Opendata_API_V1.2.pdf

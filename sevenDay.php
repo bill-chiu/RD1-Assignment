@@ -17,11 +17,11 @@ $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElemen
 
 while ($i < count($weatherElement[3]['time'])) {
     $startTime = $weatherElement[2]['time'][$i]['startTime'];
-    $endTime = $weatherElement[2]['time'][$i]['endTime'];
     for ($j = 0; $j < count($weatherElement); $j++) {
         switch ($weatherElement[$j]['elementName']) {
             case "Wx":
                 $Wx = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                $WxV = $weatherElement[$j]['time'][$i]['elementValue'][1]["value"];
                 break;
             case "MaxAT":
                 $MaxAT = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
@@ -61,8 +61,8 @@ while ($i < count($weatherElement[3]['time'])) {
     $Description = $WeatherDescription[2];
 
     $sql = <<<multi
-INSERT INTO sevenDay (startTime,endTime,Wx,MaxAT,MinAT,T,MaxT,MinT,RH,PoP,Description,WS,WD) VALUES
-('$startTime', '$endTime','$Wx', '$MaxAT', '$MinAT','$T','$MaxT','$MinT','$RH','$PoP','$Description','$WS','$WD')
+INSERT INTO sevenDay (startTime,Wx,WxV,MaxAT,MinAT,MaxT,MinT,PoP,Description,WS,WD) VALUES
+('$startTime', '$Wx',$WxV, '$MaxAT', '$MinAT','$MaxT','$MinT','$PoP','$Description','$WS','$WD')
 multi;
 
     mysqli_query($link, $sql);

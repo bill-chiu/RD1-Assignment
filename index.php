@@ -8,7 +8,6 @@ if (isset($_POST["btnOK"])) {
     require("twoDay.php");
     require("sevenDay.php");
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -22,9 +21,6 @@ if (isset($_POST["btnOK"])) {
 </head>
 
 <style>
-
-
-
 
 </style>
 
@@ -71,31 +67,44 @@ if (isset($_POST["btnOK"])) {
                     <option value="連江縣">連江縣</option>
                 </select>
                 <button name="btnOK" type="btnOK" class="btn btn-primary">查詢天氣</button>
+                <button name="btnOK" type="btnOK" class="btn btn-primary">查詢雨量</button>
             </div>
         </div>
-        <div id="boxb">
+        <div id="boxb" >
             <h3>
                 <?= $locationName . "天氣報告<br>"; ?>
 
                 <a><img src="image/country/<?= $locationName ?>.jpg" width="480" height="270"></a>
             </h3>
             <?php
-            $sql = <<<multi
-        select * from toDay 
-    multi;
+            $sql = 'select * from twoDay';
+            $tworesult = mysqli_query($link, $sql);
+            $row = mysqli_fetch_assoc($tworesult);  ?>
+            <h1>
+                <div> <?php $T = $row["T"];  ?></div>
+            </h1>
+
+
+
+            <?php $sql =  'select * from toDay';
+
             $nowresult = mysqli_query($link, $sql);
             ?>
-            <div align="center">
+            <div >
 
                 <?php $row = mysqli_fetch_assoc($nowresult)  ?>
-                <div>
+                <div align="center">
 
                     <h3>
                         <div> <?= $row["Wx"] . "<br>" ?>
 
-                            <a><img src="image/weather/<?= $row["Wx"] ?>.svg" width="200" height="200"></a>
-                            <?= "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>" ?>
-                            <?= "降雨機率 " . $row["PoP"] . "％<br>" ?>
+                            <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="200" height="200"></a>
+                    </h3>
+                    <h1><?=$T . "°C<br>" ?> </h1>
+
+                    <h3> <?=$row["MinT"] . ' / ' . $row["MaxT"] . "°C<br>" ?>
+
+                        <?= "降雨機率 " . $row["PoP"] . "％<br>" ?>
                     </h3>
                 </div>
             </div>
@@ -104,6 +113,8 @@ if (isset($_POST["btnOK"])) {
         <h3>明後天天氣預報</h3>
 
         <?php
+
+
         $date1 = date("Y-m-d", strtotime("1 day"));
         $date2 = date("Y-m-d", strtotime("2 day"));
         $sql = <<<multi
@@ -137,7 +148,7 @@ if (isset($_POST["btnOK"])) {
 
                     <div style="background-color:#D2E9FF; "> <?= $row["Wx"] . "<br>" ?>
 
-                        <a><img src="image/weather/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
+                        <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="100" height="100"></a>
                         <?php echo "<br>" . "溫度" .  $row["T"] . "°C<br>"; ?>
                         <?= $row["PoP"] . "<br>" ?>
                     </div>
@@ -146,7 +157,7 @@ if (isset($_POST["btnOK"])) {
                         <?php $row = mysqli_fetch_assoc($tworesult) ?>
 
                         <?= $row["Wx"] . "<br>" ?>
-                        <a><img src="image/weather/<?= $row["Wx"] ?>.svg" width="100" height="100"></a>
+                        <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="100" height="100"></a>
                         <?= "<br>" . "溫度" . $row["T"] . "°C<br>" ?>
                         <?= $row["PoP"] . "<br>" ?>
                         <div style="background-color:#46A3FF; ">
@@ -163,8 +174,11 @@ if (isset($_POST["btnOK"])) {
 
 
         <?php
+
+        $date = date("Y-m-d");
         $sql = <<<multi
-        select * from sevenDay 
+        select * from sevenDay WHERE `startTime` > '$date%' 
+
     multi;
 
         $sevenresult = mysqli_query($link, $sql);
@@ -186,7 +200,7 @@ if (isset($_POST["btnOK"])) {
                     </div>
                     <div style="background-color:#D2E9FF; "> <?= $row["Wx"] . "<br>" ?>
 
-                        <a><img src="image/weather/<?= $row["Wx"] ?>.svg" width="60" height="60"></a>
+                        <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="60" height="60"></a>
                         <?php echo "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>";
                         $MinAT = $row["MinAT"];
                         $MaxAT = $row["MaxAT"];
@@ -196,7 +210,7 @@ if (isset($_POST["btnOK"])) {
                     <div style="background-color:#ACD6FF; ">
                         <?php $row = mysqli_fetch_assoc($sevenresult) ?>
                         <?= $row["Wx"] . "<br>" ?>
-                        <a><img src="image/weather/<?= $row["Wx"] ?>.svg" width="60" height="60"></a>
+                        <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="60" height="60"></a>
                         <?= "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>" ?>
                         <div style="background-color:#D2E9FF; ">
                             <?= "體感溫度 " . $MinAT . "~" . $MaxAT . "°C" ?></div>

@@ -16,7 +16,6 @@ mysqli_query($link, $sql);
 
         // echo $i . "<br>";
         $startTime = $weatherElement[1]['time'][$i]['startTime'];
-        $endTime = $weatherElement[1]['time'][$i]['endTime'];
         // echo ($startTime) . "<br>";
         // echo $endTime . "<br>";
         for ($j = 0; $j < count($weatherElement); $j++) {
@@ -24,6 +23,7 @@ mysqli_query($link, $sql);
 
                 case "Wx":
                     $Wx = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
+                    $WxV = $weatherElement[$j]['time'][$i]['elementValue'][1]["value"];
                     break;
                 case "AT":
                     $AT = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
@@ -50,8 +50,8 @@ mysqli_query($link, $sql);
         }
 
         $sql = <<<multi
-        INSERT INTO twoDay (startTime,endTime,Wx,T,RH,PoP,Description,WS,WD) VALUES
-        ('$startTime', '$endTime','$Wx','$T','$RH','$PoP','$Description','$WS','$WD')
+        INSERT INTO twoDay (startTime,Wx,WxV,T,RH,PoP,Description,WS,WD) VALUES
+        ('$startTime','$Wx',$WxV,'$T','$RH','$PoP','$Description','$WS','$WD')
         multi;
         mysqli_query($link, $sql);
         $i++;
