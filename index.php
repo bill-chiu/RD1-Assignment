@@ -52,7 +52,7 @@ if (isset($_POST["btnRain"])) {
 
     <div style="background-color:#2894FF" align="center">
         <h1>
-            <font color="#dddddd ">個人氣象站</font>
+            <font color="#EEFFFF ">個人氣象站</font>
         </h1>
     </div>
 
@@ -87,12 +87,12 @@ if (isset($_POST["btnRain"])) {
                 <button name="btnRain" type="btnRain" class="btn btn-primary">查詢雨量</button>
             </div>
         </div>
-        <div id="boxb" >
-            <h3>
+        <div id="boxb">
+            <h2>
                 <?= $locationName . "天氣報告<br>"; ?>
 
                 <a><img src="image/country/<?= $locationName ?>.jpg" width="480" height="270"></a>
-            </h3>
+            </h2>   
             <?php
             $sql = 'select * from twoDay';
             $tworesult = mysqli_query($link, $sql);
@@ -100,8 +100,6 @@ if (isset($_POST["btnRain"])) {
             <h1>
                 <div> <?php $T = $row["T"];  ?></div>
             </h1>
-
-
 
             <?php $sql =  'select * from toDay';
 

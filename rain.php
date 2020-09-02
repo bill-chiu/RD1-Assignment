@@ -9,7 +9,7 @@ $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
 if (isset($_POST["btnOK"])) {
 
     $locationName = $_POST["locationName"];
-    $_SESSION['city']=$locationName;
+    $_SESSION['city'] = $locationName;
     header("Location: index.php");
 }
 
@@ -33,13 +33,14 @@ while ($i < count($location)) {
 
     $city = $location[$i]['parameter'][0]['parameterValue'];
     $town = $location[$i]['parameter'][1]['parameterValue'];
+    $townName = $location[$i]['locationName'];
     $attribute = $location[$i]['parameter'][2]['parameterValue'];
     $oneHour = $location[$i]['weatherElement'][0]['elementValue'];
     $oneDay = $location[$i]['weatherElement'][1]['elementValue'];
 
     $sql = <<<multi
-    INSERT INTO rain (city,town,attribute,oneHour,oneDay) VALUES
-    ('$city','$town','$attribute','$oneHour','$oneDay')
+    INSERT INTO rain (city,town,townName,attribute,oneHour,oneDay) VALUES
+    ('$city','$town','$townName','$attribute','$oneHour','$oneDay')
     multi;
     mysqli_query($link, $sql);
 
@@ -73,14 +74,14 @@ while ($i < count($location)) {
 
     <div style="background-color:#2894FF" align="center">
         <h1>
-            <font color="#dddddd ">個人氣象站</font>
+            <font color="#EEFFFF ">個人氣象站</font>
         </h1>
     </div>
 
     <form id="form1" name="form1" method="post">
         <div class="form-group row">
             <div class="col-8">
-                <select id="locationName" name="locationName" class="custom-select col-4 " required="required" >
+                <select id="locationName" name="locationName" class="custom-select col-4 " required="required">
                     <option value="基隆市">基隆市</option>
                     <option value="臺北市">臺北市</option>
                     <option value="新北市">新北市</option>
@@ -110,27 +111,49 @@ while ($i < count($location)) {
             </div>
         </div>
     </form>
+   <h2><?= $locationName . "雨量報告<br>"; ?></h2> 
+    <div id="boxa">
 
-    <?php
 
-
-    $sql = "select * from rain WHERE city='$locationName'";
-    $rainresult = mysqli_query($link, $sql);
-    while ($row = mysqli_fetch_assoc($rainresult)) { ?>
         <?php
 
-        echo $row['city'] . "<br>";
 
-        echo "觀測站" . $row['town'] . "<br>";
+        $sql = "select * from rain WHERE city='$locationName'";
+        $rainresult = mysqli_query($link, $sql);
+        $i = 0;
+        while ($row = mysqli_fetch_assoc($rainresult)) { ?>
+            <div>
+                <div style="background-color:#003D79 " align="center">  <font color="white">
+           
+                   <?php
 
-        echo $row['attribute'] . "<br>";
+                    $i++;
+                    echo "觀測站: " . $row['townName'] . "<br>"; ?>
+               
+              </font> </div>
+                  <div style="background-color:#D2E9FF; ">
+                <?php    echo   "站址: " . $row['city'] .' '.$row['town'] ."<br>";      
 
-        echo '１小時' . $row['oneHour']  . "<br>";
+                echo "隸屬: " . $row['attribute'] . "<br>";
 
-        echo '１天' . $row['oneDay'] . "<br>";
-        ?>
+                if ($row['oneHour'] >= 0) {
 
-    <?php } ?>
+                    echo '過去1小時累積雨量: ' . $row['oneHour']  . "<br>";
+                } else {
+                    echo '過去1小時累積雨量: 無檢測紀錄' . "<br>";
+                }
+
+                if ($row['oneDay'] >= 0) {
+
+                    echo '過去24小時累積雨量: ' . $row['oneDay'] . "<br>";
+                } else {
+                    echo '過去24小時累積雨量: 無檢測紀錄' . "<br>";
+                }
+                ?>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
 </body>
 
 </html>

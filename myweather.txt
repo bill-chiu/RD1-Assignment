@@ -5,14 +5,15 @@ use myweather;
 CREATE TABLE rain (
     city varchar(12) NOT NULL DEFAULT '',
     town varchar(12) NOT NULL DEFAULT '',
+    townName varchar(12) NOT NULL DEFAULT '',
     attribute varchar(12) NOT NULL DEFAULT '',
     oneHour varchar(12) NOT NULL DEFAULT '',
     oneDay varchar(12) NOT NULL DEFAULT ''
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO rain (city,town,attribute,oneHour,oneDay) VALUES
-('臺北市','烏來區','局屬無人測站','10','50')
+INSERT INTO rain (city,town,townName,attribute,oneHour,oneDay) VALUES
+('臺北市','烏來區','townName','局屬無人測站','10','50')
 
 
 CREATE TABLE today (
