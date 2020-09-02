@@ -3,9 +3,7 @@
 $sql = "DELETE FROM `twoDay`";
 mysqli_query($link, $sql);
 
-    $locationName = $_POST["locationName"];
 
-    $urllocationName =  urlencode($locationName);
     $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
 
     $json = file_get_contents($url);
@@ -14,10 +12,9 @@ mysqli_query($link, $sql);
     $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElement'];
     while ($i < count($weatherElement[3]['time'])) {
 
-        // echo $i . "<br>";
+
         $startTime = $weatherElement[1]['time'][$i]['startTime'];
-        // echo ($startTime) . "<br>";
-        // echo $endTime . "<br>";
+
         for ($j = 0; $j < count($weatherElement); $j++) {
             switch ($weatherElement[$j]['elementName']) {
 
@@ -48,12 +45,10 @@ mysqli_query($link, $sql);
             $PoP=$WeatherDescription[1];
             $Description=$WeatherDescription[3];
         }
-
         $sql = <<<multi
         INSERT INTO twoDay (startTime,Wx,WxV,T,RH,PoP,Description,WS,WD) VALUES
         ('$startTime','$Wx',$WxV,'$T','$RH','$PoP','$Description','$WS','$WD')
         multi;
         mysqli_query($link, $sql);
         $i++;
-
     }

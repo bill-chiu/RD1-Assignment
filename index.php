@@ -1,12 +1,29 @@
 <?php
-
+session_start();
 $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
 require("connDB.php");
 
 if (isset($_POST["btnOK"])) {
+
+    $locationName = $_POST["locationName"];
+
+    $urllocationName =  urlencode($locationName);
     require("nowDay.php");
     require("twoDay.php");
     require("sevenDay.php");
+}else{
+    $locationName = $_SESSION['city'];
+    $urllocationName =  urlencode($locationName);
+    require("nowDay.php");
+    require("twoDay.php");
+    require("sevenDay.php");
+}
+
+if (isset($_POST["btnRain"])) {
+
+    $locationName = $_POST["locationName"];
+    $_SESSION['city']=$locationName;
+    header("Location: rain.php");
 }
 ?>
 
@@ -67,7 +84,7 @@ if (isset($_POST["btnOK"])) {
                     <option value="連江縣">連江縣</option>
                 </select>
                 <button name="btnOK" type="btnOK" class="btn btn-primary">查詢天氣</button>
-                <button name="btnOK" type="btnOK" class="btn btn-primary">查詢雨量</button>
+                <button name="btnRain" type="btnRain" class="btn btn-primary">查詢雨量</button>
             </div>
         </div>
         <div id="boxb" >

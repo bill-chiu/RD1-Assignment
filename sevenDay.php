@@ -3,9 +3,7 @@
 $sql = "DELETE FROM `sevenDay`";
 mysqli_query($link, $sql);
 
-$locationName = $_POST["locationName"];
 
-$urllocationName =  urlencode($locationName);
 $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
 
 $json = file_get_contents($url);

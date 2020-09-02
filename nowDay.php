@@ -1,11 +1,10 @@
 <?php
-
+session_start();
 $sql = "DELETE FROM `today`";
 mysqli_query($link, $sql);
 
-$locationName = $_POST["locationName"];
+$urllocationName =  urlencode($_SESSION['city']);
 
-$urllocationName =  urlencode($locationName);
 $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=".$Authorization."&locationName=".$urllocationName);
 
 $json = file_get_contents($url);

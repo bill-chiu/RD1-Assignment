@@ -30,7 +30,6 @@ CREATE TABLE today (
 
 CREATE TABLE twoDay (
     startTime varchar(25) NOT NULL DEFAULT '',
-    endTime varchar(25) NOT NULL DEFAULT '',
     Wx varchar(12) NOT NULL DEFAULT '',
     WxV varchar(12) NOT NULL DEFAULT '',
     T varchar(12) NOT NULL DEFAULT '',
@@ -41,8 +40,8 @@ CREATE TABLE twoDay (
     WD varchar(12) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
- INSERT INTO twoDay (startTime,endTime,Wx,WxV,T,RH,PoP,Description,WS,WD) VALUES
-    ('10:20', '10:30','爽','50','87%','PoP',,'哭','7','東北')
+ INSERT INTO twoDay (startTime,Wx,WxV,T,RH,PoP,Description,WS,WD) VALUES
+    ('10:20','爽','50','87%','PoP',,'哭','7','東北')
 
 
 CREATE TABLE sevenDay (
