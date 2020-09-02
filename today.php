@@ -1,5 +1,4 @@
 <?php
-session_start();
 $sql = "DELETE FROM `today`";
 mysqli_query($link, $sql);
 
