@@ -3,26 +3,33 @@ session_start();
 $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
 require("connDB.php");
 
+//如果按下查詢天氣
 if (isset($_POST["btnOK"])) {
-
+    //記錄選擇的縣市
     $locationName = $_POST["locationName"];
-
+    //解析成網址
     $urllocationName =  urlencode($locationName);
-    require("nowDay.php");
+    //資料庫記錄即時/兩天/一週的資料
+    require("today.php");
     require("twoDay.php");
     require("sevenDay.php");
-}else{
+} else {
+    //如果是從雨量頁面跳轉 則紀錄儲存的SESSION
     $locationName = $_SESSION['city'];
+    //解析成網址
     $urllocationName =  urlencode($locationName);
-    require("nowDay.php");
+    //資料庫記錄即時/兩天/一週的資料
+    require("today.php");
     require("twoDay.php");
     require("sevenDay.php");
 }
-
+//如果按下查詢雨量
 if (isset($_POST["btnRain"])) {
-
+    //記錄輸入得城市
     $locationName = $_POST["locationName"];
-    $_SESSION['city']=$locationName;
+    //將其暫存到SESSION
+    $_SESSION['city'] = $locationName;
+    //跳轉到雨量頁面
     header("Location: rain.php");
 }
 ?>
@@ -92,8 +99,9 @@ if (isset($_POST["btnRain"])) {
                 <?= $locationName . "天氣報告<br>"; ?>
 
                 <a><img src="image/country/<?= $locationName ?>.jpg" width="480" height="270"></a>
-            </h2>   
+            </h2>
             <?php
+            //搜尋兩天的表並儲存最即時的當前溫度
             $sql = 'select * from twoDay';
             $tworesult = mysqli_query($link, $sql);
             $row = mysqli_fetch_assoc($tworesult);  ?>
@@ -101,11 +109,15 @@ if (isset($_POST["btnRain"])) {
                 <div> <?php $T = $row["T"];  ?></div>
             </h1>
 
-            <?php $sql =  'select * from toDay';
+
+
+            <?php
+            //搜尋今天的表並顯示表的內容
+            $sql =  'select * from toDay';
 
             $nowresult = mysqli_query($link, $sql);
             ?>
-            <div >
+            <div>
 
                 <?php $row = mysqli_fetch_assoc($nowresult)  ?>
                 <div align="center">
@@ -115,9 +127,9 @@ if (isset($_POST["btnRain"])) {
 
                             <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="200" height="200"></a>
                     </h3>
-                    <h1><?=$T . "°C<br>" ?> </h1>
+                    <h1><?= $T . "°C<br>" ?> </h1>
 
-                    <h3> <?=$row["MinT"] . ' / ' . $row["MaxT"] . "°C<br>" ?>
+                    <h3> <?= $row["MinT"] . ' / ' . $row["MaxT"] . "°C<br>" ?>
 
                         <?= "降雨機率 " . $row["PoP"] . "％<br>" ?>
                     </h3>
@@ -129,37 +141,33 @@ if (isset($_POST["btnRain"])) {
 
         <?php
 
-
+        //記錄明天後天的日期
         $date1 = date("Y-m-d", strtotime("1 day"));
         $date2 = date("Y-m-d", strtotime("2 day"));
+        //篩選早晚6:00以及明後天的資料
         $sql = <<<multi
         select * from twoDay WHERE (`startTime` LIKE '%6:00%' OR `startTime` LIKE '%18:00%') and (`startTime` LIKE '$date1%' OR `startTime` LIKE '$date2%') 
     multi;
         $tworesult = mysqli_query($link, $sql);
         ?>
-
-
         <div id="boxa" align="center">
 
             <?php while ($row = mysqli_fetch_assoc($tworesult)) { ?>
-
-
-
-
                 <div>
                     <div style="background-color:#003D79 ">
-                        <?php $week = array("日", "一", "二", "三", "四", "五", "六");
+
+                        <?php
+                        //建立一個陣列去轉換星期
+                        $week = array("日", "一", "二", "三", "四", "五", "六");
+                        //用空格分割startTime
                         list($date) = explode(" ", $row["startTime"]);
-                        list($Y, $M, $D) = explode("-", $date); //分離出年月日以便製作時戳
+                        //用底線分割date
+                        list($Y, $M, $D) = explode("-", $date);
                         ?>
 
                         <font color="white"><?= substr($row["startTime"], 5, 5) . "  星期" . $week[date("w", mktime(0, 0, 0, $M, $D, $Y))]; ?>
                         </font>
                     </div>
-
-
-
-
 
                     <div style="background-color:#D2E9FF; "> <?= $row["Wx"] . "<br>" ?>
 
@@ -186,16 +194,12 @@ if (isset($_POST["btnRain"])) {
 
             <?php } ?>
         </div>
-
-
         <?php
-
+        //記錄今天日期
         $date = date("Y-m-d");
         $sql = <<<multi
         select * from sevenDay WHERE `startTime` > '$date%' 
-
     multi;
-
         $sevenresult = mysqli_query($link, $sql);
         ?>
 
@@ -206,9 +210,13 @@ if (isset($_POST["btnRain"])) {
 
                 <div>
                     <div style="background-color:#003D79 ">
-                        <?php $week = array("日", "一", "二", "三", "四", "五", "六");
+                        <?php
+                        //建立一個陣列去轉換星期
+                        $week = array("日", "一", "二", "三", "四", "五", "六");
+                        //用空格分割startTime
                         list($date) = explode(" ", $row["startTime"]);
-                        list($Y, $M, $D) = explode("-", $date); //分離出年月日以便製作時戳
+                        //用底線分割date
+                        list($Y, $M, $D) = explode("-", $date);
                         ?>
                         <font color="white"><?= substr($row["startTime"], 5, 5) . "  星期" . $week[date("w", mktime(0, 0, 0, $M, $D, $Y))]; ?>
                         </font>

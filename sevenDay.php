@@ -16,6 +16,7 @@ $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElemen
 while ($i < count($weatherElement[3]['time'])) {
     $startTime = $weatherElement[2]['time'][$i]['startTime'];
     for ($j = 0; $j < count($weatherElement); $j++) {
+        //用switch去對應所要記錄的內容
         switch ($weatherElement[$j]['elementName']) {
             case "Wx":
                 $Wx = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
@@ -49,6 +50,7 @@ while ($i < count($weatherElement[3]['time'])) {
             default:
         }
     }
+    //用句號切開秒數句並記錄需要的內容
     $WeatherDescription = explode("。", $weatherElement[10]['time'][$i]['elementValue'][0]["value"]);
 
     if (count($WeatherDescription) >= 7) {
@@ -57,7 +59,7 @@ while ($i < count($weatherElement[3]['time'])) {
     } else
         $PoP = '';
     $Description = $WeatherDescription[2];
-
+    //將儲存資料加入至資料庫
     $sql = <<<multi
 INSERT INTO sevenDay (startTime,Wx,WxV,MaxAT,MinAT,MaxT,MinT,PoP,Description,WS,WD) VALUES
 ('$startTime', '$Wx',$WxV, '$MaxAT', '$MinAT','$MaxT','$MinT','$PoP','$Description','$WS','$WD')
@@ -66,6 +68,3 @@ multi;
     mysqli_query($link, $sql);
     $i++;
 }
-
-
-?>

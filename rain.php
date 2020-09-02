@@ -5,17 +5,21 @@ require("connDB.php");
 mysqli_query($link, $sql);
 $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
 
-
+//如果按下查詢天氣
 if (isset($_POST["btnOK"])) {
-
+    //記錄輸入得城市
     $locationName = $_POST["locationName"];
+    //將其暫存到SESSION
     $_SESSION['city'] = $locationName;
+    //跳轉到天氣頁面
     header("Location: index.php");
 }
-
+//如果按下查詢雨量
 if (isset($_POST["btnRain"])) {
+    //記錄選擇的城市
     $locationName = $_POST["locationName"];
 } else {
+    //如果是從天氣頁面跳轉 則紀錄儲存的SESSION
     $locationName = $_SESSION['city'];
 }
 $urllocationName =  urlencode($locationName);
@@ -30,12 +34,17 @@ $data = json_decode($json, true);
 $location = $data['records']['location'];
 $i = 0;
 while ($i < count($location)) {
-
+    //縣市
     $city = $location[$i]['parameter'][0]['parameterValue'];
+    //鄉鎮
     $town = $location[$i]['parameter'][1]['parameterValue'];
+    //觀測站名稱
     $townName = $location[$i]['locationName'];
+    //觀測站所屬
     $attribute = $location[$i]['parameter'][2]['parameterValue'];
+    //1小時內累積雨量
     $oneHour = $location[$i]['weatherElement'][0]['elementValue'];
+    //24小時內累積雨量
     $oneDay = $location[$i]['weatherElement'][1]['elementValue'];
 
     $sql = <<<multi
@@ -111,7 +120,7 @@ while ($i < count($location)) {
             </div>
         </div>
     </form>
-   <h2><?= $locationName . "雨量報告<br>"; ?></h2> 
+    <h2><?= $locationName . "雨量報告<br>"; ?></h2>
     <div id="boxa">
 
 
@@ -123,33 +132,35 @@ while ($i < count($location)) {
         $i = 0;
         while ($row = mysqli_fetch_assoc($rainresult)) { ?>
             <div>
-                <div style="background-color:#003D79 " align="center">  <font color="white">
-           
-                   <?php
+                <div style="background-color:#003D79 " align="center">
+                    <font color="white">
 
-                    $i++;
-                    echo "觀測站: " . $row['townName'] . "<br>"; ?>
-               
-              </font> </div>
-                  <div style="background-color:#D2E9FF; ">
-                <?php    echo   "站址: " . $row['city'] .' '.$row['town'] ."<br>";      
+                        <?php
 
-                echo "隸屬: " . $row['attribute'] . "<br>";
+                        $i++;
+                        echo "觀測站: " . $row['townName'] . "<br>"; ?>
 
-                if ($row['oneHour'] >= 0) {
+                    </font>
+                </div>
+                <div style="background-color:#D2E9FF; ">
+                    <?php echo   "站址: " . $row['city'] . ' ' . $row['town'] . "<br>";
 
-                    echo '過去1小時累積雨量: ' . $row['oneHour']  . "<br>";
-                } else {
-                    echo '過去1小時累積雨量: 無檢測紀錄' . "<br>";
-                }
+                    echo "隸屬: " . $row['attribute'] . "<br>";
 
-                if ($row['oneDay'] >= 0) {
+                    if ($row['oneHour'] >= 0) {
 
-                    echo '過去24小時累積雨量: ' . $row['oneDay'] . "<br>";
-                } else {
-                    echo '過去24小時累積雨量: 無檢測紀錄' . "<br>";
-                }
-                ?>
+                        echo '過去1小時累積雨量: ' . $row['oneHour']  . "<br>";
+                    } else {
+                        echo '過去1小時累積雨量: 無檢測紀錄' . "<br>";
+                    }
+
+                    if ($row['oneDay'] >= 0) {
+
+                        echo '過去24小時累積雨量: ' . $row['oneDay'] . "<br>";
+                    } else {
+                        echo '過去24小時累積雨量: 無檢測紀錄' . "<br>";
+                    }
+                    ?>
                 </div>
             </div>
         <?php } ?>
