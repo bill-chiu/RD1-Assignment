@@ -14,8 +14,13 @@ if (isset($_POST["btnOK"])) {
     require("twoDay.php");
     require("sevenDay.php");
 } else {
-    //如果是從雨量頁面跳轉 則紀錄儲存的SESSION
-    $locationName = $_SESSION['city'];
+    if (!isset($_SESSION['city'])) {
+
+        $locationName = "基隆縣";
+    } else {
+        //如果是從雨量頁面跳轉 則紀錄儲存的SESSION
+        $locationName = $_SESSION['city'];
+    }
     //解析成網址
     $urllocationName =  urlencode($locationName);
     //資料庫記錄即時/兩天/一週的資料
