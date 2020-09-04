@@ -3,6 +3,8 @@ session_start();
 $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
 require("connDB.php");
 
+$locationName = "基隆市";
+$urllocationName =  urlencode($locationName);
 //如果按下查詢天氣
 if (isset($_POST["btnOK"])) {
     //記錄選擇的縣市
@@ -14,12 +16,11 @@ if (isset($_POST["btnOK"])) {
     require("twoDay.php");
     require("sevenDay.php");
 } else {
-    if (!isset($_SESSION['city'])) {
 
-        $locationName = "基隆縣";
-    } else {
-        //如果是從雨量頁面跳轉 則紀錄儲存的SESSION
-        $locationName = $_SESSION['city'];
+
+    //如果是從雨量頁面跳轉 則紀錄儲存的SESSION
+    if(isset($_SESSION['city'])){
+    $locationName = $_SESSION['city'];
     }
     //解析成網址
     $urllocationName =  urlencode($locationName);
