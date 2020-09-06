@@ -13,7 +13,7 @@ CREATE TABLE rain (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO rain (city,town,townName,attribute,oneHour,oneDay) VALUES
-('臺北市','烏來區','townName','局屬無人測站','10','50')
+('臺北市','烏來區','townName','局屬無人測站','10','50');
 
 
 CREATE TABLE today (
@@ -26,8 +26,8 @@ CREATE TABLE today (
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
- INSERT INTO today (Wx,WxV,T,MaxT,MinT,PoP) VALUES
-    ('爽','01','50','87','12','87%')
+ INSERT INTO today (Wx,WxV,MaxT,MinT,PoP) VALUES
+    ('爽','01','87','12','87%');
 
 CREATE TABLE twoDay (
     startTime varchar(25) NOT NULL DEFAULT '',
@@ -42,7 +42,7 @@ CREATE TABLE twoDay (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
  INSERT INTO twoDay (startTime,Wx,WxV,T,RH,PoP,Description,WS,WD) VALUES
-    ('10:20','爽','50','87%','PoP',,'哭','7','東北')
+    ('10:20','爽','1','50','87%','PoP','哭','7','東北');
 
 
 CREATE TABLE sevenDay (
@@ -60,5 +60,5 @@ CREATE TABLE sevenDay (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
  INSERT INTO sevenDay (startTime,Wx,WxV,MaxAT,MinAT,MaxT,MinT,PoP,Description,WS,WD) VALUES
-    ('10:20','爽','WxV', '87', '13','87','13','87%','哭','7','東北')
+    ('10:20','爽','WxV', '87', '13','87','13','87%','哭','7','東北');
 
