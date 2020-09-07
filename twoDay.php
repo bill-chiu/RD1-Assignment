@@ -13,7 +13,7 @@ $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElemen
 while ($i < count($weatherElement[3]['time'])) {
 
 
-    $startTime = $weatherElement[1]['time'][$i]['startTime'];
+    $startTime = $weatherElement[3]['time'][$i]['dataTime'];
 
     for ($j = 0; $j < count($weatherElement); $j++) {
         //用switch去對應所要記錄的內容
@@ -35,6 +35,17 @@ while ($i < count($weatherElement[3]['time'])) {
             case "WS":
                 $WS = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
                 break;
+            case "WeatherDescription":
+                $WeatherDescription = explode("。", $weatherElement[6]['time'][$i]['elementValue'][0]["value"]);
+                if (count($WeatherDescription) >= 7) {
+                    if ($WeatherDescription[1] == "降雨機率  %") {
+                        $PoP = "暫無數據";
+                    } else {
+                        $PoP = $WeatherDescription[1];
+                    }
+                    $Description = $WeatherDescription[3];
+                }
+                break;
             case "WD":
                 $WD = $weatherElement[$j]['time'][$i]['elementValue'][0]["value"];
                 break;
@@ -42,11 +53,11 @@ while ($i < count($weatherElement[3]['time'])) {
         }
     }
     //用句號切開秒數句並記錄需要的內容
-    $WeatherDescription = explode("。", $weatherElement[6]['time'][$i]['elementValue'][0]["value"]);
-    if (count($WeatherDescription) >= 5) {
-        $PoP = $WeatherDescription[1];
-        $Description = $WeatherDescription[3];
-    }
+    // $WeatherDescription = explode("。", $weatherElement[6]['time'][$i]['elementValue'][0]["value"]);
+    // if (count($WeatherDescription) >= 5) {
+    //     $PoP = $WeatherDescription[1];   
+    //     $Description = $WeatherDescription[3];
+    // }
     //將儲存資料加入至資料庫
     $sql = <<<multi
         INSERT INTO twoDay (startTime,Wx,WxV,T,RH,PoP,Description,WS,WD) VALUES
