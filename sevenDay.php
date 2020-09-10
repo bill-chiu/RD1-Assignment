@@ -1,8 +1,8 @@
 <?php
 
 $sql = "DELETE FROM `sevenDay`";
-mysqli_query($link, $sql);
-
+// mysqli_query($link, $sql);
+$link->exec($sql);
 
 $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
 
@@ -65,6 +65,6 @@ INSERT INTO sevenDay (startTime,Wx,WxV,MaxAT,MinAT,MaxT,MinT,PoP,Description,WS,
 ('$startTime', '$Wx',$WxV, '$MaxAT', '$MinAT','$MaxT','$MinT','$PoP','$Description','$WS','$WD')
 multi;
 
-    mysqli_query($link, $sql);
+$link->exec($sql);
     $i++;
 }

@@ -1,7 +1,7 @@
 <?php
 session_start();
 $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
-require("connDB.php");
+require("PDOconnDB.php");
 
 $locationName = "基隆市";
 $urllocationName =  urlencode($locationName);
@@ -109,8 +109,8 @@ if (isset($_POST["btnRain"])) {
             <?php
             //搜尋兩天的表並儲存最即時的當前溫度
             $sql = 'select * from twoDay';
-            $tworesult = mysqli_query($link, $sql);
-            $row = mysqli_fetch_assoc($tworesult);  ?>
+            $tworesult =$link->query($sql);
+            $row=$tworesult->fetch();  ?>
             <h1>
                 <div> <?php $T = $row["T"];  ?></div>
             </h1>
@@ -121,11 +121,11 @@ if (isset($_POST["btnRain"])) {
             //搜尋今天的表並顯示表的內容
             $sql =  'select * from toDay';
 
-            $nowresult = mysqli_query($link, $sql);
+            $nowresult =$link->query($sql);
             ?>
             <div>
 
-                <?php $row = mysqli_fetch_assoc($nowresult)  ?>
+                <?php   $row=$nowresult->fetch();  ?>
                 <div align="center">
 
                     <h3>
@@ -154,11 +154,12 @@ if (isset($_POST["btnRain"])) {
         $sql = <<<multi
         select * from twoDay WHERE (`startTime` LIKE '%6:00%' OR `startTime` LIKE '%18:00%') and (`startTime` LIKE '$date1%' OR `startTime` LIKE '$date2%') 
     multi;
-        $tworesult = mysqli_query($link, $sql);
+
+        $tworesult =$link->query($sql);
         ?>
         <div id="boxa" align="center">
 
-            <?php while ($row = mysqli_fetch_assoc($tworesult)) { ?>
+            <?php  while ($row=$tworesult->fetch()) { ?>
                 <div>
                     <div style="background-color:#003D79 ">
 
@@ -183,7 +184,7 @@ if (isset($_POST["btnRain"])) {
                     </div>
 
                     <div style="background-color:#ACD6FF; ">
-                        <?php $row = mysqli_fetch_assoc($tworesult) ?>
+                        <?php $row=$tworesult->fetch() ?>
 
                         <?= $row["Wx"] . "<br>" ?>
                         <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="100" height="100"></a>
@@ -206,13 +207,14 @@ if (isset($_POST["btnRain"])) {
         $sql = <<<multi
         select * from sevenDay WHERE `startTime` > '$date%' 
     multi;
-        $sevenresult = mysqli_query($link, $sql);
+       
+        $sevenresult =$link->query($sql);
         ?>
 
         <h3>一週天氣預報</h3>
         <div id="box" align="center">
 
-            <?php while ($row = mysqli_fetch_assoc($sevenresult)) { ?>
+            <?php while ($row=$sevenresult->fetch())  { ?>
 
                 <div>
                     <div style="background-color:#003D79 ">
@@ -237,7 +239,7 @@ if (isset($_POST["btnRain"])) {
                         ?></div>
 
                     <div style="background-color:#ACD6FF; ">
-                        <?php $row = mysqli_fetch_assoc($sevenresult) ?>
+                        <?php $row=$sevenresult->fetch() ?>
                         <?= $row["Wx"] . "<br>" ?>
                         <a><img src="image/weather/<?= $row["WxV"] ?>.svg" width="60" height="60"></a>
                         <?= "<br>" . "溫度" . $row["MinT"] . "~" . $row["MaxT"] . "°C<br>" ?>

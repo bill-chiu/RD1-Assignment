@@ -1,6 +1,6 @@
 <?php
 $sql = "DELETE FROM `today`";
-mysqli_query($link, $sql);
+$link->exec($sql);
 
 $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=".$Authorization."&locationName=".$urllocationName);
 $json = file_get_contents($url);
@@ -24,5 +24,5 @@ $sql = <<<multi
 INSERT INTO today (Wx,WxV,MaxT,MinT,PoP) VALUES
 ('$Wx','$WxV','$MaxT','$MinT','$PoP')
 multi;
-mysqli_query($link, $sql);
+$link->exec($sql);
 ?>

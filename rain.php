@@ -1,8 +1,7 @@
 <?php
 session_start();
-$sql = "DELETE FROM `rain`";
-require("connDB.php");
-mysqli_query($link, $sql);
+require("PDOconnDB.php");
+$link->exec("DELETE FROM `rain`");
 $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
 
 //如果按下查詢天氣
@@ -51,8 +50,8 @@ while ($i < count($location)) {
     INSERT INTO rain (city,town,townName,attribute,oneHour,oneDay) VALUES
     ('$city','$town','$townName','$attribute','$oneHour','$oneDay')
     multi;
-    mysqli_query($link, $sql);
-
+    // mysqli_query($link, $sql);
+    $link->exec($sql);
     $i++;
 }
 
@@ -128,9 +127,13 @@ while ($i < count($location)) {
 
         //查詢所選縣市觀測站 並按照鄉鎮排序
         $sql = "select * from rain WHERE city='$locationName' ORDER BY `rain`.`town` ASC";
-        $rainresult = mysqli_query($link, $sql);
+        
+
+ 
+    // $rainresult = mysqli_query($link, $sql);
+        $rainresult =$link->query($sql);
         $i = 0;
-        while ($row = mysqli_fetch_assoc($rainresult)) { ?>
+        while ($row=$rainresult->fetch()) { ?>
             <div>
                 <div style="background-color:#003D79 " align="center">
                     <font color="white">

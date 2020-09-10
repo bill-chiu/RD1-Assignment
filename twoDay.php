@@ -1,7 +1,7 @@
 <?php
 
 $sql = "DELETE FROM `twoDay`";
-mysqli_query($link, $sql);
+$link->exec($sql);
 
 
 $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
@@ -52,17 +52,12 @@ while ($i < count($weatherElement[3]['time'])) {
             default:
         }
     }
-    //用句號切開秒數句並記錄需要的內容
-    // $WeatherDescription = explode("。", $weatherElement[6]['time'][$i]['elementValue'][0]["value"]);
-    // if (count($WeatherDescription) >= 5) {
-    //     $PoP = $WeatherDescription[1];   
-    //     $Description = $WeatherDescription[3];
-    // }
+
     //將儲存資料加入至資料庫
     $sql = <<<multi
         INSERT INTO twoDay (startTime,Wx,WxV,T,RH,PoP,Description,WS,WD) VALUES
         ('$startTime','$Wx',$WxV,'$T','$RH','$PoP','$Description','$WS','$WD')
         multi;
-    mysqli_query($link, $sql);
+        $link->exec($sql);
     $i++;
 }
