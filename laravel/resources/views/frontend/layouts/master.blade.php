@@ -20,10 +20,36 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-
-
+   
+  
     @include('frontend.layouts.header')
     @include('frontend.layouts.navbar')
+
+
+
+    </h1>
+
+    <div>
+
+       
+        <div align="center">
+
+            <h3>
+                <div>  {{$data[0]->Wx}} <br>
+
+                    <a><img src="image/weather/{{$data[0]->WxV}}.svg" width="200" height="200"></a>
+            </h3>
+
+
+            <h3>   {{$data[0]->MinT}}  /  {{$data[0]->MaxT}}  °C<br>
+
+              降雨機率  {{$data[0]->PoP}}%
+            </h3>
+        </div>
+    </div>
+</div>
+</div>
+    
     @yield('content')
     @include('frontend.layouts.footer')
            

@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'TodayController@index');
+
+
+// Route::apiResource('test', 'TodayController@index');

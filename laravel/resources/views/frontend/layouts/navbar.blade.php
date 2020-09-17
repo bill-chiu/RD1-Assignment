@@ -33,7 +33,7 @@
         <div id="boxb">
             <h2>
          
-                    @php   "天氣報告<br>"; @endphp
+                    @php  echo  "天氣報告<br>"; @endphp
 
                 <a><img src="image/country/@php echo '基隆市' @endphp.jpg" width="480" height="270"></a>
             </h2>
