@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{{asset('css/grid.css')}}">
 </head>
 
+
+
+
+
 <style>
 
 </style>
@@ -39,6 +43,8 @@
 
                     <a><img src="image/weather/{{$data[0]->WxV}}.svg" width="200" height="200"></a>
             </h3>
+
+       
 
 
             <h3>   {{$data[0]->MinT}}  /  {{$data[0]->MaxT}}  °C<br>
