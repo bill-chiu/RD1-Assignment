@@ -49,6 +49,12 @@
     </div>
 </div>
 </div>
+
+
+
+
+
+
     
     @yield('content')
     @include('frontend.layouts.footer')

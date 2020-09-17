@@ -147,13 +147,7 @@ if (isset($_POST["btnRain"])) {
 
         <?php
 
-        //記錄明天後天的日期
-        $date1 = date("Y-m-d", strtotime("1 day"));
-        $date2 = date("Y-m-d", strtotime("2 day"));
-        //篩選早晚6:00以及明後天的資料
-        $sql = <<<multi
-        select * from twoDay WHERE (`startTime` LIKE '%6:00%' OR `startTime` LIKE '%18:00%') and (`startTime` LIKE '$date1%' OR `startTime` LIKE '$date2%') 
-    multi;
+
 
         $tworesult =$link->query($sql);
         ?>

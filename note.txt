@@ -1,0 +1,5 @@
+$ php artisan make:controller HomeController --resource
+
+做出來的屬api再做抓取資料上 會有問題
+
+$ php artisan make:controller HomeController  
