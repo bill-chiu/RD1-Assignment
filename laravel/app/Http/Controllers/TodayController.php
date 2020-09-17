@@ -21,6 +21,9 @@ class TodayController extends Controller
         $data = TodayModel::all();
         $data2 = TwoDayModel::where('startTime','LIKE','%6:00%')->orWhere('startTime','LIKE','%18:00%')->where('startTime','LIKE',"$date1")->orWhere('startTime','LIKE',"$date2")->get();
         $data3 = SevenDayModel::where('startTime','>',"$date")->get();
+
+
+        
         return view('index', compact('data','data2','data3'));
 
         
