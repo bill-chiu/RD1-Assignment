@@ -10,8 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// use App\Http\Controllers;
+// Route::get('/', function(){
+//     $controller = new Controllers\newDataController;
+//     $controller->newdata();
+//     $controller = new Controllers\TodayController;
+//     $controller->index();
+// });
 
+
+// Route::get('/', 'newDataController@newdata');
+// Route::get('/', 'newDataController2@newdata');
+// Route::get('/', 'newDataController3@newdata');
 Route::get('/', 'TodayController@index');
-
-
-// Route::apiResource('test', 'TodayController@index');

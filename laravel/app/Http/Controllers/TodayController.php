@@ -11,6 +11,12 @@ class TodayController extends Controller
 {
     public function index()
     {
+        // $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
+        // $locationName = "台北市";
+        // $urllocationName =  urlencode($locationName);
+        require("newDataController.php");
+        require("newDataController2.php");
+        require("newDataController3.php");
         //記錄明天後天的日期
         $date1 = date("Y-m-d", strtotime("1 day"));
         $date2 = date("Y-m-d", strtotime("2 day"));                                              
