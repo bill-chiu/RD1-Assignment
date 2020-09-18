@@ -209,6 +209,7 @@ if (isset($_POST["btnRain"])) {
     multi;
        
         $sevenresult =$link->query($sql);
+
         ?>
 
         <h3>一週天氣預報</h3>
