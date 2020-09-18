@@ -29,7 +29,7 @@ class TodayController extends Controller
                                 $query->where('startTime','LIKE','%6:00%')
                                 ->orWhere('startTime','LIKE','%18:00%');
                             })
-                               ->orwhere('startTime','LIKE',"%$date2%")      
+                               ->orWhere('startTime','LIKE',"%$date2%")      
                                ->where(function($query)
                             {
                               $query->where('startTime','LIKE','%6:00%')
