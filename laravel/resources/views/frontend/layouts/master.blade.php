@@ -26,8 +26,16 @@
     @include('frontend.layouts.navbar')
 
 
+    <div id="boxb">
+        <h2>
+     
+                @php  echo  "天氣報告<br>"; @endphp
 
-    </h1>
+            <a><img src="image/country/@php echo '基隆市' @endphp.jpg" width="480" height="270"></a>
+        </h2>
+
+
+   <div></div>
     {{-- 即時 --}}
     <div>
 
@@ -39,8 +47,8 @@
 
                     <a><img src="image/weather/{{ (int) $data[0]->WxV }}.svg" width="200" height="200"></a>
             </h3>
-
-
+   
+            <h1>{{ $data4[0]->T}}°C</h1>
 
 
             <h3> {{ $data[0]->MinT }} / {{ $data[0]->MaxT }} °C<br>
@@ -55,11 +63,13 @@
 
 
     {{-- 明後天 --}}
-
+<br>
     <h3>明後天天氣預報</h3>
 
     <div id="boxa" align="center">
+        @php $day='morning'; @endphp
         @foreach ($data2 as $item2)
+        @if ($day == 'morning')
             <div>
                 <div style="background-color:#003D79 ">
 
@@ -72,8 +82,8 @@
                     list($Y, $M, $D) = explode("-", $date);
                     @endphp
 
-                    <font color="white">@php echo $item2->startTime. " 星期" .$week[date("w", mktime(0, 0, 0, $M, $D,
-                        $Y))]; @endphp
+                    <font color="white">@php echo substr($item2->startTime,5,5). " 星期" .$week[date("w", mktime(0, 0, 0, $M, $D,
+                        $Y))]; @endphp 
                     </font>
                 </div>
                 <div style="background-color:#D2E9FF; "> {{ $item2->Wx }}<br>
@@ -83,7 +93,11 @@
                 </div>
                 <div style="background-color:#ACD6FF; ">
 
+                    @php $day='night' @endphp
+                    @continue
 
+
+                @else
                     {{ $item2->Wx }}<br>
                     <a><img src="image/weather/{{ (int) $item2->WxV }}.svg" width="100" height="100"></a>
                     @php echo "<br>" . "溫度" . $item2->T . "°C<br>"; @endphp
@@ -96,10 +110,13 @@
                     </div>
                 </div>
             </div>
+            @php $day='morning' @endphp
+            @continue
+        @endif
         @endforeach
     </div>
     {{-- 一週 --}}
-
+<br>
     <h3>一週天氣預報</h3>
     <div id="box" align="center">
         @php $day='morning'; @endphp
@@ -116,9 +133,7 @@
                         //用底線分割date
                         list($Y, $M, $D) = explode("-", $date);
                         @endphp
-                        <font color="white">@php echo $item3->startTime . " 星期" . $week[date("w", mktime(0, 0, 0, $M,
-                            $D,
-                            $Y))]; @endphp
+                        <font color="white">@php echo substr($item3->startTime,5,5) . " 星期" . $week[date("w", mktime(0, 0, 0, $M,$D, $Y))]; @endphp
                         </font>
                     </div>
                     <div style="background-color:#D2E9FF; "> {{ $item3->Wx }}<br>
@@ -130,7 +145,7 @@
                         $MaxAT = $item3->MaxAT;
                         $day='night';
                         @endphp </div>
-                    @php $day=='night' @endphp
+         
                     @continue
 
 
@@ -145,8 +160,8 @@
                             @php echo "體感溫度 " . $MinAT . "~" . $MaxAT . "°C" @endphp</div>
                         <div style="background-color:#46A3FF; ">
                             <font color="white">
-                                <td> {{ $item2->WD }}<br></td>
-                                <td> {{ $item2->WS }}公尺/秒<br></td>
+                                <td> {{ $item3->WD }}<br></td>
+                                <td> {{ $item3->WS }}公尺/秒<br></td>
                             </font>
                         </div>
                     </div>

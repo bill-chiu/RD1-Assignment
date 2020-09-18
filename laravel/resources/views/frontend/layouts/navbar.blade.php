@@ -30,12 +30,3 @@
                 <button name="btnRain" type="btnRain" class="btn btn-primary">查詢雨量</button>
             </div>
         </div>
-        <div id="boxb">
-            <h2>
-         
-                    @php  echo  "天氣報告<br>"; @endphp
-
-                <a><img src="image/country/@php echo '基隆市' @endphp.jpg" width="480" height="270"></a>
-            </h2>
-
-        </form>

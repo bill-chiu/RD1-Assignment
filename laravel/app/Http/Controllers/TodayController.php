@@ -11,14 +11,12 @@ class TodayController extends Controller
 {
     public function index()
     {
-                //記錄明天後天的日期
-                $date1 = date("Y-m-d", strtotime("1 day"));
-                $date2 = date("Y-m-d", strtotime("2 day"));
-                //篩選早晚6:00以及明後天的資料
-                $date = date("Y-m-d");
-                // $sql = <<<multi
-                // select * from sevenDay WHERE `startTime` > '$date%' 
+        //記錄明天後天的日期
+        $date1 = date("Y-m-d", strtotime("1 day"));
+        $date2 = date("Y-m-d", strtotime("2 day"));                                              
+
         $data = TodayModel::all();
+        
         $data2 = TwoDayModel::where('startTime','LIKE',"%$date1%")      
                                 ->where(function($query)
                                 {
@@ -30,13 +28,12 @@ class TodayController extends Controller
                             {
                               $query->where('startTime','LIKE','%6:00%')
                               ->orWhere('startTime','LIKE','%18:00%');
-                        })->get();
-                            
+                        })->get();                           
         $data3 = SevenDayModel::where('startTime','>',"$date1")->get();
 
-
-        
-        return view('index', compact('data','data2','data3'));
+        $data4=TwoDayModel::all();
+      
+        return view('index', compact('data','data2','data3','data4'));
 
         
     }
