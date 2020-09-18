@@ -5,12 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="{{asset('css/grid.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/grid.css') }}">
 </head>
-
-
-
-
 
 <style>
 
@@ -24,48 +20,94 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-   
-  
+
+
     @include('frontend.layouts.header')
     @include('frontend.layouts.navbar')
 
 
 
     </h1>
-
+    {{-- 即時 --}}
     <div>
 
-       
+
         <div align="center">
 
             <h3>
-                <div>  {{$data[0]->Wx}} <br>
+                <div> {{ $data[0]->Wx }} <br>
 
-                    <a><img src="image/weather/{{$data[0]->WxV}}.svg" width="200" height="200"></a>
+                    <a><img src="image/weather/{{ (int) $data[0]->WxV }}.svg" width="200" height="200"></a>
             </h3>
 
-       
 
 
-            <h3>   {{$data[0]->MinT}}  /  {{$data[0]->MaxT}}  °C<br>
 
-              降雨機率  {{$data[0]->PoP}}%
+            <h3> {{ $data[0]->MinT }} / {{ $data[0]->MaxT }} °C<br>
+
+                降雨機率 {{ $data[0]->PoP }}%
             </h3>
         </div>
     </div>
-</div>
-</div>
+    </div>
+    </div>
 
 
 
-
-
-
+    {{-- 明後天  --}}
     
-    @yield('content')
-    @include('frontend.layouts.footer')
-           
-      
+    <h3>明後天天氣預報</h3>
+
+    <div id="boxa" align="center">
+        @foreach ($data2 as $item2)
+            <div>
+                <div style="background-color:#003D79 ">
+
+                    @php
+                    //建立一個陣列去轉換星期
+                    $week = array("日", "一", "二", "三", "四", "五", "六");
+                    //用空格分割startTime
+                    list($date) = explode(" ", $item2->startTime);
+                    //用底線分割date
+                    list($Y, $M, $D) = explode("-", $date);
+                    @endphp
+
+                    <font color="white">@php echo $item2->startTime. " 星期" .$week[date("w", mktime(0, 0, 0, $M, $D,
+                        $Y))]; @endphp
+                    </font>
+                </div>
+                <div style="background-color:#D2E9FF; "> {{ $item2->Wx }}<br>
+                    <a><img src="image/weather/@php echo (int)$item2->WxV @endphp.svg" width="100" height="100"></a>
+                    @php echo "<br>" . "溫度" . $item2->T . "°C<br>"; @endphp
+                    {{ $item2->PoP }}
+                </div>
+                <div style="background-color:#ACD6FF; ">
+
+
+                    {{ $item2->Wx }}<br>
+                    <a><img src="image/weather/@php echo (int)$item2->WxV @endphp.svg" width="100" height="100"></a>
+                    @php echo "<br>" . "溫度" . $item2->T . "°C<br>"; @endphp
+                    {{ $item2->PoP }}
+                    <div style="background-color:#46A3FF; ">
+                        <font color="white">
+                            <td> {{ $item2->WD }}<br></td>
+                            <td> {{ $item2->WS }}公尺/秒<br></td>
+                        </font>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+    {{-- 一週 --}}
+
+
+
+
+
+
+
+    </div>
+
 
 </body>
 

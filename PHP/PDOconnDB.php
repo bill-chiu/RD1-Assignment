@@ -6,11 +6,11 @@ $db_host = "localhost";
 
 $db_user = "root";
 
-$db_pass = "";
+$db_pass = "root";
 
 $db_select = "myweather";
 
-$db_port = 3306;
+$db_port = 8889;
 
 //使用PDO存取資料庫時，需要將資料庫依下列格式撰寫，讓程式讀取資料庫
 
