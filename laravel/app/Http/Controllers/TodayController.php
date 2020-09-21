@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\TodayModel;
 use App\TwoDayModel;
 use App\SevenDayModel;
+use App\RainModel;
 use DB;
 
 class TodayController extends Controller
@@ -42,11 +43,54 @@ class TodayController extends Controller
                 break;
     
             case '查詢雨量':
-                return view('rain', compact('locationName'));
+                $this->rain();
+
+                $data5=RainModel::where('city',"$locationName")->orderBy('town', 'ASC')->get();
+      
+                return view('rain', compact('locationName','data5'));
                 break;
     }
     }
+public function rain()
+{
+    DB::table('rain')->delete();
+    $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0002-001?Authorization=CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256&elementName=RAIN,HOUR_24,NOW&parameterName=TOWN,CITY,ATTRIBUTE");
 
+$json = file_get_contents($url);
+$data = json_decode($json, true);
+
+
+//取得天氣因子
+$location = $data['records']['location'];
+$i = 0;
+while ($i < count($location)) {
+    //縣市
+    $city = $location[$i]['parameter'][0]['parameterValue'];
+    //鄉鎮
+    $town = $location[$i]['parameter'][1]['parameterValue'];
+    //觀測站名稱
+    $townName = $location[$i]['locationName'];
+    //觀測站所屬
+    $attribute = $location[$i]['parameter'][2]['parameterValue'];
+    //1小時內累積雨量
+    $oneHour = $location[$i]['weatherElement'][0]['elementValue'];
+    //24小時內累積雨量
+    $oneDay = $location[$i]['weatherElement'][1]['elementValue'];
+
+                //將儲存資料加入至資料庫
+        
+                DB::table('rain')->insert([
+                    'city'=>$city,
+                    'town'=>$town,
+                    'townName'=>$townName,
+                    'attribute'=>$attribute,
+                    'oneHour'=>$oneHour,
+                    'oneDay'=>$oneDay,
+
+                ]);
+    $i++;
+}
+}
     public function newTodayData($Authorization,$urllocationName)
     {
         DB::table('today')->delete();

@@ -28,15 +28,45 @@
 
     <div id="boxb">
         <h2>
-     
-        {{$locationName}}天氣報告<br>
+
+            {{ $locationName }}雨量報告<br>
 
             <a><img src="image/country/@php echo '基隆市' @endphp.jpg" width="480" height="270"></a>
         </h2>
+    </div>
+    <div id="boxa">
 
+        @foreach ($data5 as $item5)
 
-  
+            <div>
+                <div style="background-color:#003D79 " align="center">
+                    <font color="white">
+                        觀測站 : {{ $item5->townName }}<br>
 
+                    </font>
+                </div>
+                <div style="background-color:#D2E9FF; ">
+                    站址 : {{ $item5->townName }} {{ $item5->town }}<br>
+
+                    隸屬 : {{ $item5->attribute }}<br>
+                    @php
+                    if ($item5->oneHour >= 0) {
+
+                    echo '過去1小時累積雨量 : ' . $item5->oneHour . "<br>";
+                    } else {
+                    echo '過去1小時累積雨量 : 無檢測紀錄' . "<br>";
+                    }
+
+                    if ( $item5->oneDay >= 0) {
+
+                    echo '過去24小時累積雨量 : ' . $item5->oneDay . "<br>";
+                    } else {
+                    echo '過去24小時累積雨量 : 無檢測紀錄' . "<br>";
+                    }
+                    @endphp
+                </div>
+            </div>
+        @endforeach
 </body>
 
 </html>
