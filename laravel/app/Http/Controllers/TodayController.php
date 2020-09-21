@@ -8,10 +8,41 @@ use App\TwoDayModel;
 use App\SevenDayModel;
 use DB;
 
+
 class TodayController extends Controller
 {
+    public function newData(Request $request)
+    {
+        $locationName = $request->input('locationName');
 
-    
+        echo $locationName;
+        $this->index($locationName);
+
+        $date1 = date("Y-m-d", strtotime("1 day"));
+        $date2 = date("Y-m-d", strtotime("2 day"));                                              
+
+        $data = TodayModel::all();
+        
+        $data2 = TwoDayModel::where('startTime','LIKE',"%$date1%")      
+                                ->where(function($query)
+                                {
+                                $query->where('startTime','LIKE','%6:00%')
+                                ->orWhere('startTime','LIKE','%18:00%');
+                            })
+                               ->orWhere('startTime','LIKE',"%$date2%")      
+                               ->where(function($query)
+                            {
+                              $query->where('startTime','LIKE','%6:00%')
+                              ->orWhere('startTime','LIKE','%18:00%');
+                        })->get();                           
+        $data3 = SevenDayModel::where('startTime','>',"$date1")->get();
+
+        $data4=TwoDayModel::all();
+      
+        return view('index', compact('data','data2','data3','data4'));
+      
+    }
+
     public function newTodayData($Authorization,$urllocationName)
     {
         // $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
@@ -60,6 +91,7 @@ class TodayController extends Controller
         $json = file_get_contents($url);
         $data = json_decode($json, true);
         $i = 0;
+        
         $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElement'];
         while ($i < count($weatherElement[3]['time'])) {
         
@@ -203,12 +235,16 @@ $i++;
 
     }
 
-    public function index()
+    public function index($locationName='基隆市')
     {
-
+        // if(!isset($locationName)){
+        //     $locationName='基隆市';
+        // }
+     
+  
 
         $Authorization = 'CWB-1B75C5B5-3E1B-4775-96B4-7FA1A26DF256';
-        $locationName = "桃園市";
+
         $urllocationName =  urlencode($locationName);
 
         $this->newTodayData($Authorization,$urllocationName);

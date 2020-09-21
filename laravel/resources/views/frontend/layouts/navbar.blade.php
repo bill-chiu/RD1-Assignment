@@ -1,5 +1,5 @@
 
-    <form id="form1" name="form1" method="post">
+    <form id="form1" name="form1" method="post" action="weather">
         <div class="form-group row">
             <div class="col-8">
                 <select id="locationName" name="locationName" class="custom-select col-4 " required="required">
@@ -26,6 +26,7 @@
                     <option value="金門縣">金門縣</option>
                     <option value="連江縣">連江縣</option>
                 </select>
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                 <button name="btnOK" type="btnOK" class="btn btn-primary">查詢天氣</button>
                 <button name="btnRain" type="btnRain" class="btn btn-primary">查詢雨量</button>
             </div>

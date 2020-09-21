@@ -19,7 +19,7 @@
 // });
 
 
-// Route::get('/', 'newDataController@newdata');
-// Route::get('/', 'newDataController2@newdata');
-// Route::get('/', 'newDataController3@newdata');
+
+
 Route::get('/', 'TodayController@index');
+Route::post('/weather', 'TodayController@newData');
