@@ -29,7 +29,7 @@
     <div id="boxb">
         <h2>
      
-                @php  echo  "天氣報告<br>"; @endphp
+        {{$locationName}}天氣報告<br>
 
             <a><img src="image/country/@php echo '基隆市' @endphp.jpg" width="480" height="270"></a>
         </h2>
