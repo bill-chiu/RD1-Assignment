@@ -10,5 +10,5 @@ class TodayModel extends Model
     protected $table = 'today';  // 資料表名稱
     public $timestamps = false;
     protected $fillable =   
-       ['Wx','WxV','MaxT','MinT','PoP'];
+       ['City','Wx','WxV','MaxT','MinT','PoP'];
 }

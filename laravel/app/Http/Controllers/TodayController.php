@@ -21,7 +21,7 @@ class TodayController extends Controller
                 $date1 = date("Y-m-d", strtotime("1 day"));
                 $date2 = date("Y-m-d", strtotime("2 day"));                                              
         
-                $data = TodayModel::all();
+                $data = TodayModel::where('City',"$locationName")->get();
                 
                 $data2 = TwoDayModel::where('startTime','LIKE',"%$date1%")      
                                         ->where(function($query)
@@ -95,12 +95,15 @@ while ($i < count($location)) {
     {
         DB::table('today')->delete();
 
-        $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=".$Authorization."&locationName=".$urllocationName);
+        $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=".$Authorization);
         $json = file_get_contents($url);
         $data = json_decode($json, true);
-        
+        $i=0;
+        while ($i < count($data['records']['location'])) {
+
+        $city= $data['records']['location'][$i]['locationName'];
         //取得天氣因子
-        $weatherElement = $data['records']['location'][0]['weatherElement'];
+        $weatherElement = $data['records']['location'][$i]['weatherElement'];
         
         //天氣現象描述
         $Wx=$weatherElement[0]['time'][0]['parameter']["parameterName"];
@@ -115,7 +118,7 @@ while ($i < count($location)) {
         //將儲存資料加入至資料庫
         
         DB::table('today')->insert([
-
+            'City'=>$city,
             'Wx'=>$Wx,
             'WxV'=>$WxV,
             'MaxT'=>$MaxT,
@@ -123,6 +126,8 @@ while ($i < count($location)) {
             'PoP'=>$PoP
             
         ]);
+    $i++;
+    }
     }
     public function newTowdayData($Authorization,$urllocationName)
     {
