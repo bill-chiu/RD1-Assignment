@@ -9,5 +9,5 @@ class TwoDayModel extends Model
     protected $table = 'twoDay';  // 資料表名稱
     public $timestamps = false;
     protected $fillable =   
-       ['startTime','Wx','WxV','T','RH','PoP','Description','WS','WD'];
+       ['City','startTime','Wx','WxV','T','RH','PoP','Description','WS','WD'];
 }

@@ -23,19 +23,21 @@ class TodayController extends Controller
         
                 $data = TodayModel::where('City',"$locationName")->get();
                 
-                $data2 = TwoDayModel::where('startTime','LIKE',"%$date1%")      
-                                        ->where(function($query)
-                                        {
-                                        $query->where('startTime','LIKE','%6:00%')
-                                        ->orWhere('startTime','LIKE','%18:00%');
-                                    })
-                                       ->orWhere('startTime','LIKE',"%$date2%")      
-                                       ->where(function($query)
-                                    {
-                                      $query->where('startTime','LIKE','%6:00%')
-                                      ->orWhere('startTime','LIKE','%18:00%');
-                                })->get();                           
-                $data3 = SevenDayModel::where('startTime','>',"$date1")->get();
+                $data2 = TwoDayModel::where('startTime','LIKE',"%$date1%")->where('City',"$locationName")     
+                ->where(function($query)
+                {
+                $query
+                ->where('startTime','LIKE','%6:00%')
+                ->orWhere('startTime','LIKE','%18:00%');
+            })
+               ->orWhere('startTime','LIKE',"%$date2%")->where('City',"$locationName")
+               ->where(function($query)
+            {
+                $query
+              ->where('startTime','LIKE','%6:00%')
+              ->orWhere('startTime','LIKE','%18:00%');
+        })->get();                                              
+                $data3 = SevenDayModel::where('startTime','>',"$date1")->where('City',"$locationName")->get();
         
                 $data4=TwoDayModel::all();
               
@@ -133,16 +135,20 @@ while ($i < count($location)) {
     {
         DB::table('twoDay')->delete();
 
-        $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
+        $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=" . $Authorization);
 
         $json = file_get_contents($url);
         $data = json_decode($json, true);
+
+     $k=0;
+     while($k<count($data['records']['locations'][0]['location'])){
+         
+        $weatherElement = $data['records']['locations'][0]['location'][$k]['weatherElement'];
+        $city=$data['records']['locations'][0]['location'][$k]['locationName'];
+        echo $city; 
         $i = 0;
-        
-        $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElement'];
         while ($i < count($weatherElement[3]['time'])) {
-        
-        
+
             $startTime = $weatherElement[3]['time'][$i]['dataTime'];
         
             for ($j = 0; $j < count($weatherElement); $j++) {
@@ -185,6 +191,7 @@ while ($i < count($location)) {
                 //將儲存資料加入至資料庫
         
                 DB::table('twoDay')->insert([
+                    'City'=>$city,
                     'startTime'=>$startTime,
                     'Wx'=>$Wx,
                     'WxV'=>$WxV,
@@ -198,23 +205,26 @@ while ($i < count($location)) {
                
 $i++;
         }
-     
-     
+     $k++;
+    }
        
     }
     public function newSevendayData($Authorization,$urllocationName)
     {
         DB::table('sevenDay')->delete();
 
-        $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=" . $Authorization . "&locationName=" . $urllocationName);
+        $url = ("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=" . $Authorization);
 
         $json = file_get_contents($url);
         $data = json_decode($json, true);
         
-        $i = 0;
+
         //取得天氣因子
-        $weatherElement = $data['records']['locations'][0]['location'][0]['weatherElement'];
-        
+        $k=0;
+        while($k<count($data['records']['locations'][0]['location'])){
+        $weatherElement = $data['records']['locations'][0]['location'][$k]['weatherElement'];
+        $city=$data['records']['locations'][0]['location'][$k]['locationName'];
+        $i = 0;
         while ($i < count($weatherElement[3]['time'])) {
             $startTime = $weatherElement[2]['time'][$i]['startTime'];
             for ($j = 0; $j < count($weatherElement); $j++) {
@@ -264,6 +274,7 @@ $i++;
                 //將儲存資料加入至資料庫
         
                 DB::table('sevenDay')->insert([
+                    'City'=>$city,
                     'startTime'=>$startTime,
                     'Wx'=>$Wx,
                     'WxV'=>$WxV,
@@ -279,7 +290,8 @@ $i++;
 
 $i++;
         }
-
+        $k++;
+    }
     }
 
     public function index($locationName='基隆市')
@@ -297,21 +309,23 @@ $i++;
         $date1 = date("Y-m-d", strtotime("1 day"));
         $date2 = date("Y-m-d", strtotime("2 day"));                                              
 
-        $data = TodayModel::all();
+        $data = TodayModel::where('City',"$locationName")->get();
         
-        $data2 = TwoDayModel::where('startTime','LIKE',"%$date1%")      
+        $data2 = TwoDayModel::where('startTime','LIKE',"%$date1%")->where('City',"$locationName")     
                                 ->where(function($query)
                                 {
-                                $query->where('startTime','LIKE','%6:00%')
+                                $query
+                                ->where('startTime','LIKE','%6:00%')
                                 ->orWhere('startTime','LIKE','%18:00%');
                             })
-                               ->orWhere('startTime','LIKE',"%$date2%")      
+                               ->orWhere('startTime','LIKE',"%$date2%")->where('City',"$locationName")
                                ->where(function($query)
                             {
-                              $query->where('startTime','LIKE','%6:00%')
+                                $query
+                              ->where('startTime','LIKE','%6:00%')
                               ->orWhere('startTime','LIKE','%18:00%');
                         })->get();                           
-        $data3 = SevenDayModel::where('startTime','>',"$date1")->get();
+        $data3 = SevenDayModel::where('startTime','>',"$date1")->where('City',"$locationName")   ->get();
 
         $data4=TwoDayModel::all();
       
